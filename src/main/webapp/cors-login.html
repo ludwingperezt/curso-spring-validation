@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Password Reset</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script language="javascript">
+
+function login()
+{
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    $.ajaxSetup({
+        "contentType": "application/json",
+        headers: {'Accept': "application/json"}
+    });
+    
+    var dataPayload = { "email": email, "password": password };
+    
+    $.post('http://localhost:8080/mobile-app-ws/users/login', JSON.stringify(dataPayload))
+            .done(function (response) {
+
+                $("#not-successful-result").attr("style", "display: none !important;");
+                $("#successful-result").attr("style", "display: block !important;");
+                
+
+            })
+            .fail(function(r) {
+			    console.error(r);
+			    $("#successful-result").attr("style", "display: none !important;");
+                $("#not-successful-result").attr("style", "display: block !important;");
+			});
+}
+
+
+</script>
+
+</head>
+<body>
+
+        <div id="successful-result" style="display:none">Loged in!</div>
+        <div id="not-successful-result" style="display:none">:(</div>
+
+        <form>
+            User: <input type="text" id="email"/><br/>
+            Password: <input type="password" id="password"/><br/>
+            <input type="button" value="Login" onclick="login()"/>
+        </form>
+
+</body>
+</html>
